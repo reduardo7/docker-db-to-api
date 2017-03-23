@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0-alpha.1",
+  "name": "db-to-api",
+  "description": "DB to API",
+  "author": "Eduardo Cuomo <reduardo7@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reduardo7/docker-db-to-api"
+  },
+  "bugs": {
+    "url": "https://github.com/reduardo7/docker-db-to-api/issues"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node --debug=5858 app.js"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "mysql": "^2.13.0",
+    "mysql-to-rest": "^1.0.6"
+  }
+}

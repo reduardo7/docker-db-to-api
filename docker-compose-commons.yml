@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  base-node:
+    image: node:boron
+    environment: 
+      - 'NODE_ENV=docker'
+    working_dir: /app
+    volumes:
+      - ./app:/app

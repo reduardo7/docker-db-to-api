@@ -1,0 +1,66 @@
+version: "2"
+
+services:
+
+  docker-app:
+    build:
+      context: .
+    image: reduardo7/db-to-api
+    environment:
+      DB_HOST: "db-host"
+      DB_USER: "root"
+      DB_PASS: "root"
+      DB_DATABASE: "app"
+    links:
+      - db:db-host
+    #restart: always
+
+  builder:
+    extends:
+      file: docker-compose-commons.yml
+      service: base-node
+    command: npm install
+
+  app:
+    extends:
+      file: docker-compose-commons.yml
+      service: base-node
+    environment:
+      DB_HOST: "db-host"
+      DB_USER: "root"
+      DB_PASS: "root"
+      DB_DATABASE: "app"
+    ports:
+      - 3000:3000
+      # Node-Debug
+      - 5858:5858
+    links:
+      - db:db-host
+    command: npm start
+    #restart: always
+
+  db-admin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 7701:80
+    links:
+      - db:db-host
+    environment:
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db-host
+    #restart: unless-stopped
+
+  db:
+    image: mysql
+    hostname: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app
+    #ports:
+    #  - "13306:3306"
+    volumes:
+      - ./.data/db:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    #restart: always
